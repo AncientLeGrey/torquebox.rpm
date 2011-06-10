@@ -1,0 +1,15 @@
+# default.gems generated gem export file. Note that any env variable settings will be missing. Append these after using a ';' field separator
+builder -v3.0.0
+bundler -v1.0.14
+rack -v1.3.0
+torquebox -v1.0.1
+torquebox-base -v1.0.1-java
+torquebox-capistrano-support -v1.0.1
+torquebox-container-foundation -v1.0.1
+torquebox-messaging -v1.0.1-java
+torquebox-messaging-container -v1.0.1
+torquebox-naming -v1.0.1-java
+torquebox-naming-container -v1.0.1
+torquebox-rake-support -v1.0.1
+torquebox-vfs -v1.0.1-java
+torquebox-web -v1.0.1-java

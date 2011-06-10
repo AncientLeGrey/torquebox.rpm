@@ -1,0 +1,6 @@
+[${name}]
+name=${name} $basearch
+baseurl=http://dl.dropbox.com/u/153388/${name}.rpm/noarch
+enabled=1
+gpgcheck=0
+priority=1
