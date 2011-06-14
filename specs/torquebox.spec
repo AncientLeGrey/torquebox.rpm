@@ -4,7 +4,7 @@
 Summary: Ruby on JBoss...it goes to 11.
 Name: torquebox
 Version: 1.0.1
-Release: %(echo ${BUILD_NUMBER:-1})
+Release: %(echo ${BUILD_NUMBER:-2})
 License: LGPL
 Group: Applications/System
 URL: http://torquebox.org
@@ -127,5 +127,8 @@ fi
 
 
 %changelog
+* Tue Jun 14 2011 https://github.com/AncientLeGrey - 1.0.1-2
+- add bundlers gem bin path to PATH
+- display JRUBY_HOME on login
 * Fri Jun 10 2011 https://github.com/AncientLeGrey - 1.0.1-1
 - Initial revision

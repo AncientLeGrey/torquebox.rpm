@@ -26,6 +26,9 @@ then
     if groups ${name} | grep -vqF rvm
     then
         export JRUBY_HOME=$TORQUEBOX_HOME/jruby
+        echo -e "\033[32mJRUBY_HOME=$JRUBY_HOME\033[0m";
+        # bundled gems binary path
+        export PATH=$JRUBY_HOME/lib/ruby/gems/1.8/bin:$PATH
     fi
 
     export PATH=$JRUBY_HOME/bin:$PATH
