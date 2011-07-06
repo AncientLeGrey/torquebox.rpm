@@ -131,6 +131,7 @@ fi
 %changelog
 * Wed Jul 06 2011 https://github.com/AncientLeGrey - 1.0.1-2
 - Change default URIEncoding to UTF-8 in jbossweb connectors (http, ajp)
+- Rvm gemset importfile cleanup
 * Tue Jun 14 2011 https://github.com/AncientLeGrey - 1.0.1-2
 - add bundlers gem bin path to PATH
 - display JRUBY_HOME on login
