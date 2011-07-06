@@ -16,6 +16,7 @@ Source4: http://rubygems.org/downloads/bundler-1.0.14.gem
 Source5: http://rubygems.org/downloads/rack-1.3.0.gem
 Source6: %{name}.gems
 Source7: %{name}.repo
+Patch0: server.xml.patch
 
 Distribution: Centos 5
 Packager: https://github.com/AncientLeGrey
@@ -47,6 +48,7 @@ load-balancing and high-availability is included right out-of-the-box.
 
 %prep
 %setup -n %{name}-%{version}
+%patch0 -p1
 # set some variables in external sources
 %define SOURCES %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE7}
 sed -i    's|\${name}|%{name}|g'    %{SOURCES}
@@ -127,6 +129,8 @@ fi
 
 
 %changelog
+* Wed Jul 06 2011 https://github.com/AncientLeGrey - 1.0.1-2
+- Change default URIEncoding to UTF-8 in jbossweb connectors (http, ajp)
 * Tue Jun 14 2011 https://github.com/AncientLeGrey - 1.0.1-2
 - add bundlers gem bin path to PATH
 - display JRUBY_HOME on login
