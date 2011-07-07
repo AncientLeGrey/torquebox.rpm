@@ -17,6 +17,7 @@ Source5: http://rubygems.org/downloads/rack-1.3.0.gem
 Source6: %{name}.gems
 Source7: %{name}.repo
 Patch0: server.xml.patch
+Patch1: run.sh.patch
 
 Distribution: Centos 5
 Packager: https://github.com/AncientLeGrey
@@ -48,13 +49,14 @@ load-balancing and high-availability is included right out-of-the-box.
 
 %prep
 %setup -n %{name}-%{version}
-%patch0 -p1
 # set some variables in external sources
-%define SOURCES %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE7}
+%define SOURCES %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE7} %{PATCH1}
 sed -i    's|\${name}|%{name}|g'    %{SOURCES}
 sed -i  's|\${jrubie}|%{jrubie}|g'  %{SOURCES}
 sed -i  's|\${target}|%{target}|g'  %{SOURCES}
 sed -i 's|\${version}|%{version}|g' %{SOURCES}
+%patch0 -p1
+%patch1 -p1
 
 # https://issues.jboss.org/browse/TORQUE-424
 ./jruby/bin/jruby -S gem install %{SOURCE4} --install-dir ./jruby/lib/ruby/gems/1.8
@@ -70,6 +72,7 @@ install -D %{SOURCE2} %{buildroot}/etc/sysconfig/%{name}
 install -D %{SOURCE3} %{buildroot}/etc/profile.d/%{name}.sh
 install -D %{SOURCE6} %{buildroot}/%{target}/%{jrubie}@%{name}.gems
 install -D %{SOURCE7} %{buildroot}/etc/yum.repos.d/%{name}.repo
+mkdir -p %{buildroot}/etc/%{name}.d
 
 # http://www.redhat.com/archives/rpm-list/2003-February/msg00002.html
 chmod -x %{buildroot}/%{target}/jboss/bin/jboss_init_solaris.sh
@@ -129,6 +132,8 @@ fi
 
 
 %changelog
+* Thu Jul 07 2011 https://github.com/AncientLeGrey - 1.0.1-2
+- Source all files in /etc/torquebox.d at startup
 * Wed Jul 06 2011 https://github.com/AncientLeGrey - 1.0.1-2
 - Change default URIEncoding to UTF-8 in jbossweb connectors (http, ajp)
 - Rvm gemset importfile cleanup
