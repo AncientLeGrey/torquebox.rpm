@@ -523,6 +523,26 @@ use() {
     esac
 }
 
+clean() {
+    pid=0
+    procrunning
+    if [ $pid != 0 ]
+    then
+       stop
+       sleep 3
+       dostart=1
+    fi
+    rm -rf $JBOSS_HOME/server/$JBOSSCONF/log/*
+    rm -rf $JBOSS_HOME/server/$JBOSSCONF/tmp
+    rm -rf $JBOSS_HOME/server/$JBOSSCONF/work
+    rm -rf $JBOSS_HOME/server/$JBOSSCONF/tx-object-store
+    echo "${NAME} cleanup complete\n"
+    if [ "$dostart" = "1" ]
+    then
+       start
+    fi
+}
+
 case "$1" in
 start)
     start
@@ -542,13 +562,16 @@ status)
     status
     ;;
 help)
-    echo "usage: ${NAME} (start|stop|status|restart|help|use)"
+    echo "usage: ${NAME} (start|stop|status|restart|help|use|clean)"
     ;;
 use)
     use "$2" "$3" "$4"
     ;;
+clean)
+    clean
+    ;;
 *)
-    echo "usage: ${NAME} (start|stop|status|restart|help|use)"
+    echo "usage: ${NAME} (start|stop|status|restart|help|use|clean)"
     exit 1
 esac
 
