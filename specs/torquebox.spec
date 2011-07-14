@@ -1,10 +1,10 @@
 # jruby version used by torquebox
-%define jrubie jruby-1.6.2
+%define jrubie jruby-1.6.3
 
 Summary: Ruby on JBoss...it goes to 11.
 Name: torquebox
-Version: 1.0.1
-Release: %(echo ${BUILD_NUMBER:-3})
+Version: 1.1
+Release: %(echo ${BUILD_NUMBER:-1})
 License: LGPL
 Group: Applications/System
 URL: http://torquebox.org
@@ -12,8 +12,6 @@ Source0: http://repository-torquebox.forge.cloudbees.com/release/org/torquebox/t
 Source1: %{name}.init
 Source2: %{name}.sysconfig
 Source3: %{name}.sh
-Source4: http://rubygems.org/downloads/bundler-1.0.14.gem
-Source5: http://rubygems.org/downloads/rack-1.3.0.gem
 Source6: %{name}.gems
 Source7: %{name}.repo
 Patch0: server.xml.patch
@@ -27,7 +25,7 @@ BuildRoot: %{_topdir}/tmp
 
 Requires: java >= 1.6.0
 
-# https://github.com/torquebox/torquebox/blob/1.0.1/parent/pom.xml#L244
+# https://github.com/torquebox/torquebox/blob/1.1/parent/pom.xml#L244
 Provides: jruby = %{jrubie}
 Provides: hornetq = 2.0.0.GA
 Provides: jbossas = 6.0.0.Final
@@ -57,11 +55,6 @@ sed -i  's|\${target}|%{target}|g'  %{SOURCES}
 sed -i 's|\${version}|%{version}|g' %{SOURCES}
 %patch0 -p1
 %patch1 -p1
-
-# https://issues.jboss.org/browse/TORQUE-424
-./jruby/bin/jruby -S gem install %{SOURCE4} --install-dir ./jruby/lib/ruby/gems/1.8
-# https://issues.jboss.org/browse/TORQUE-423
-./jruby/bin/jruby -S gem install %{SOURCE5} --install-dir ./jruby/lib/ruby/gems/1.8
 
 
 %install
@@ -132,8 +125,12 @@ fi
 
 
 %changelog
-* Thu Jul 14 2011 https://github.com/AncientLeGrey - 1.0.1-3
+* Thu Jul 14 2011 https://github.com/AncientLeGrey - 1.1-1
 - Clean option added to service script
+- Update to Version 1.1
+  https://issues.jboss.org/secure/ReleaseNote.jspa?projectId=12310812&version=12316704
+- Removed installation of rack and bundler gems, they are included in the
+  torquebox binary distribution (TORQUE-423, TORQUE-424)
 * Thu Jul 07 2011 https://github.com/AncientLeGrey - 1.0.1-2
 - Source all files in /etc/torquebox.d at startup
 * Wed Jul 06 2011 https://github.com/AncientLeGrey - 1.0.1-2

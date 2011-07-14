@@ -28,9 +28,7 @@ to be installed
 Login as root and just type
 
 ```bash
-yum -y -c http://dl.dropbox.com/u/153388/torquebox.rpm/torquebox.repo install torquebox
-or
-rpm -Uvh http://dl.dropbox.com/u/153388/torquebox.rpm/noarch/torquebox-1.0.1-1.noarch.rpm
+yum -y -c http://bit.ly/iX9CKG install torquebox
 ```
 
 After that TorqueBox will be running as a service listening on port 8080.
@@ -58,7 +56,7 @@ exit
 
 ### Switching to rvm
 Switching to rvm means that the torquebox server joins the group rvm und uses
-a gemset named jruby-1.6.2@torquebox.
+a gemset named jruby-1.6.3@torquebox.
 
 When you switch to rvm the first time, jruby and the torquebox-gems will be 
 installed. Use the --no-install option to avoid this.
@@ -80,6 +78,10 @@ sudo service torquebox use bundled
 ```bash
 sudo service torquebox (start|stop|restart)
 ```
+
+### Configuration
+Any script in /etc/torquebox.d gets sourced. Put application level configuration
+like JENKINS_HOME in there.
 
 
 ## Bugs

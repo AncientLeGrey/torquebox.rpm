@@ -536,7 +536,7 @@ clean() {
     rm -rf $JBOSS_HOME/server/$JBOSSCONF/tmp
     rm -rf $JBOSS_HOME/server/$JBOSSCONF/work
     rm -rf $JBOSS_HOME/server/$JBOSSCONF/tx-object-store
-    echo "${NAME} cleanup complete\n"
+    echo "${NAME} cleanup complete"
     if [ "$dostart" = "1" ]
     then
        start
