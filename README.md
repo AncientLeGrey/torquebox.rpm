@@ -1,10 +1,10 @@
-# TorquBox RPM
-TorquBox RPM is a packaged version of the torquebox distribution provided by
+# TorqueBox RPM
+TorqueBox RPM is a packaged version of the torquebox distribution provided by
 [The TorqueBox Project](https://github.com/torquebox)
 
 
 ## Features
-- Install TorquBox with one single yum command
+- Install TorqueBox with one single yum command
 - Update to new versions with yum 
 - Switch between bundled jruby and [rvm](https://rvm.beginrescueend.com/)
 - Autoconfigure jruby environment for selected users
@@ -28,7 +28,7 @@ to be installed
 Login as root and just type
 
 ```bash
-yum -y -c http://bit.ly/iX9CKG install torquebox
+yum -c http://bit.ly/torquebox-repo install torquebox
 ```
 
 After that TorqueBox will be running as a service listening on port 8080.
@@ -79,10 +79,21 @@ sudo service torquebox use bundled
 sudo service torquebox (start|stop|restart)
 ```
 
+### Cleanup torquebox
+Sometimes its a good idea to delete the tmp, work, log and data/tx-object-store
+directories to get rid of inconsistent temp data.
+
+```bash
+sudo service torquebox clean
+```
+
+does exactly that.
+
 ### Configuration
 Any script in /etc/torquebox.d gets sourced. Put application level configuration
 like JENKINS_HOME in there.
 
 
 ## Bugs
-Please report bugs with the GitHub issue tracker.
+Please report bugs to the
+[GitHub issue tracker](https://github.com/AncientLeGrey/torquebox.rpm/issues).
