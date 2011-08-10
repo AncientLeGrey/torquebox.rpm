@@ -2,5 +2,5 @@
 builder -v3.0.0
 bundler -v1.0.14
 rack -v1.3.0
-torquebox -v1.1
-torquebox-capistrano-support -v1.1
+torquebox -v1.1.1
+torquebox-capistrano-support -v1.1.1

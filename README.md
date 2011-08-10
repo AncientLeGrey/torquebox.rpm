@@ -95,5 +95,5 @@ like JENKINS_HOME in there.
 
 
 ## Bugs
-Please report bugs to the
-[GitHub issue tracker](https://github.com/AncientLeGrey/torquebox.rpm/issues).
+ - Please report rpm packaging related bugs to the [GitHub issue tracker](https://github.com/AncientLeGrey/torquebox.rpm/issues)
+ - Bugs related to torquebox itself are reported to [TorqueBox Community: Issues](http://torquebox.org/community/issues/)

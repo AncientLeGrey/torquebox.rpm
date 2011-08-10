@@ -3,7 +3,7 @@
 
 Summary: Ruby on JBoss...it goes to 11.
 Name: torquebox
-Version: 1.1
+Version: 1.1.1
 Release: %(echo ${BUILD_NUMBER:-1})
 License: LGPL
 Group: Applications/System
@@ -25,7 +25,7 @@ BuildRoot: %{_topdir}/tmp
 
 Requires: java >= 1.6.0
 
-# https://github.com/torquebox/torquebox/blob/1.1/parent/pom.xml#L244
+# https://github.com/torquebox/torquebox/blob/1.1.1/parent/pom.xml#L244
 Provides: jruby = %{jrubie}
 Provides: hornetq = 2.0.0.GA
 Provides: jbossas = 6.0.0.Final
@@ -126,7 +126,9 @@ fi
 /etc
 
 %changelog
-* Wed Aug 10 2011 2011 https://github.com/AncientLeGrey - 1.1-1
+* Wed Aug 10 2011 2011 https://github.com/AncientLeGrey - 1.1.1-1
+- Update to version 1.1.1
+  https://issues.jboss.org/secure/ReleaseNote.jspa?projectId=12310812&version=12317226
 - Bugfix service clean script
 - Fixed directory permissions
 * Thu Jul 14 2011 https://github.com/AncientLeGrey - 1.1-1
