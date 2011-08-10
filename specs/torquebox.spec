@@ -121,13 +121,16 @@ fi
 
 %files
 %defattr(-,%{name},%{name})
-/
-
+%{target}
+%defattr(-,root,root)
+/etc
 
 %changelog
+* Wed Aug 10 2011 2011 https://github.com/AncientLeGrey - 1.1-1
+- Fixed directory permissions
 * Thu Jul 14 2011 https://github.com/AncientLeGrey - 1.1-1
 - Clean option added to service script
-- Update to Version 1.1
+- Update to version 1.1
   https://issues.jboss.org/secure/ReleaseNote.jspa?projectId=12310812&version=12316704
 - Removed installation of rack and bundler gems, they are included in the
   torquebox binary distribution (TORQUE-423, TORQUE-424)
