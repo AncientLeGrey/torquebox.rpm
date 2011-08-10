@@ -127,6 +127,7 @@ fi
 
 %changelog
 * Wed Aug 10 2011 2011 https://github.com/AncientLeGrey - 1.1-1
+- Bugfix service clean script
 - Fixed directory permissions
 * Thu Jul 14 2011 https://github.com/AncientLeGrey - 1.1-1
 - Clean option added to service script
