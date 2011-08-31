@@ -9,13 +9,13 @@ License: LGPL
 Group: Applications/System
 URL: http://torquebox.org
 Source0: http://repository-torquebox.forge.cloudbees.com/release/org/torquebox/torquebox-dist/%{version}/torquebox-dist-%{version}-bin.zip
-Source1: %{name}.init
-Source2: %{name}.sysconfig
-Source3: %{name}.sh
-Source6: %{name}.gems
-Source7: %{name}.repo
-Patch0: server.xml.patch
-Patch1: run.sh.patch
+Source1: %{name}/%{name}.init
+Source2: %{name}/%{name}.sysconfig
+Source3: %{name}/%{name}.sh
+Source6: %{name}/%{name}.gems
+Source7: %{name}/%{name}.repo
+Patch0: %{name}/server.xml.patch
+Patch1: %{name}/run.sh.patch
 
 Distribution: Centos 5
 Packager: https://github.com/AncientLeGrey
@@ -126,7 +126,9 @@ fi
 /etc
 
 %changelog
-* Wed Aug 10 2011 2011 https://github.com/AncientLeGrey - 1.1.1-1
+* Wed Aug 31 2011 https://github.com/AncientLeGrey - 1.1.1-1
+- Moved sources into torquebox subdirectory
+* Wed Aug 10 2011 https://github.com/AncientLeGrey - 1.1.1-1
 - Update to version 1.1.1
   https://issues.jboss.org/secure/ReleaseNote.jspa?projectId=12310812&version=12317226
 - Bugfix service clean script
