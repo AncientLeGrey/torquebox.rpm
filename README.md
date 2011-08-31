@@ -33,6 +33,16 @@ yum -c http://bit.ly/torquebox-repo install torquebox
 
 After that TorqueBox will be running as a service listening on port 8080.
 
+### Install Documentation
+Install a local copy of the torquebox docs with
+
+```bash
+yum install torquebox-docs
+```
+
+These docs are accessible at at http://localhost:8080/docs .
+
+
 ## Usage
 
 ### Deploying
