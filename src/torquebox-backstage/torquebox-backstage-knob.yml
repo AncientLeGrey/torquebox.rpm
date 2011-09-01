@@ -1,0 +1,4 @@
+--- 
+application: 
+  root: /var/lib/torquebox/jruby/lib/ruby/gems/1.8/gems/torquebox-backstage-0.5.2
+  env: production
