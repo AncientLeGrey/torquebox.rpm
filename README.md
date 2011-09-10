@@ -10,20 +10,6 @@ TorqueBox RPM is a packaged version of the torquebox distribution provided by
 - Autoconfigure jruby environment for selected users
 
 
-## Build
-You can build the rpm by yourself. Use
-[cantiere](https://github.com/AncientLeGrey/cantiere) to download souces and
-perform the rpmbuild.
-
-```bash
-rake rpm:torquebox
-```
-
-There is also a jenkins job in .jenkins/rpmbuild .
-This job requires [cantiere.rpm](https://github.com/AncientLeGrey/overbox-base-rpms)
-to be installed
-
-
 ## Installation
 Login as root and just type
 
@@ -102,6 +88,25 @@ does exactly that.
 ### Configuration
 Any script in /etc/torquebox.d gets sourced. Put application level configuration
 like JENKINS_HOME in there.
+
+
+## Build
+
+You can build the rpm by yourself.
+
+### Locally
+Use [cantiere](https://github.com/AncientLeGrey/cantiere) to download souces and
+perform the rpmbuild.
+
+```bash
+rake rpm:torquebox
+```
+
+### Inside Overbox
+An easier way to build the rpms is by using [overbox](https://github.com/AncientLeGrey/overbox):
+Clone this repository into overbox projects directory and perform "vagrant reload".
+After reload the jenkins job "torquebox.rpm-rpmbuild" sould appear. Execute this
+job to build the rpms.
 
 
 ## Bugs

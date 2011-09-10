@@ -13,6 +13,15 @@
     <com.coravy.hudson.plugins.github.GithubProjectProperty>
       <projectUrl>https://github.com/torquebox/torquebox/</projectUrl>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>version</name>
+          <description>Release version to build</description>
+          <defaultValue>1.1.1</defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
   </properties>
   <scm class="hudson.plugins.git.GitSCM">
     <configVersion>1</configVersion>
@@ -27,14 +36,14 @@
         <string>uploadpack</string>
         <string>git-upload-pack</string>
         <string>url</string>
-        <string>https://github.com/torquebox/torquebox.git</string>
+        <string>git://github.com/torquebox/torquebox-release.git</string>
         <string>tagopt</string>
         <string></string>
       </org.spearce.jgit.transport.RemoteConfig>
     </remoteRepositories>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>1.0.1</name>
+        <name>${version}</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <mergeOptions/>

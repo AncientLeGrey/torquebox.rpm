@@ -12,7 +12,7 @@
   <properties>
   </properties>
   <scm class="hudson.plugins.filesystem_scm.FSSCM">
-    <path>${project.path}</path>
+    <path><%= @project_path %></path>
     <clearWorkspace>false</clearWorkspace>
     <filterEnabled>false</filterEnabled>
     <includeFilter>false</includeFilter>
@@ -25,6 +25,9 @@
   <triggers class="vector"/>
   <concurrentBuild>false</concurrentBuild>
   <builders>
+    <hudson.tasks.Shell>
+      <command>( [ -f Gemfile.lock ] || bundle --no-color install )</command>
+    </hudson.tasks.Shell>
     <hudson.plugins.rake.Rake>
       <rakeInstallation>(Default)</rakeInstallation>
       <rakeFile>/usr/lib/cantiere/Rakefile</rakeFile>
