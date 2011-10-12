@@ -88,8 +88,8 @@ rm -Rf %{buildroot}
 %pre
 if [ "$1" = 1 ]
 then
-  getent group %{name} >/dev/null || /usr/sbin/groupadd %{name} || :
-  /usr/sbin/useradd %{name} -g %{name} || :
+  getent group %{name} >/dev/null || /usr/sbin/groupadd -r %{name} || :
+  getent passwd %{name}>/dev/null || /usr/sbin/useradd -r %{name} -g %{name} -d %{target} || :
 else
   /sbin/service %{name} stop || :
 fi
