@@ -1,0 +1,8 @@
+@_INITDDDIR@/torquebox	--	gen_context(system_u:object_r:torquebox_initrc_exec_t,s0)
+@_VAR@/www/torquebox	--	gen_context(system_u:object_r:torquebox_var_lib_t,s0)
+@_VAR@/www/torquebox(/.*)?		gen_context(system_u:object_r:torquebox_var_lib_t,s0)
+@_VAR@/run/torquebox.pid		--	gen_context(system_u:object_r:torquebox_var_run_t,s0)
+@TARGET@/jboss/bin/run.sh		--	gen_context(system_u:object_r:torquebox_exec_t,s0)
+@TARGET@(/.*)?		gen_context(system_u:object_r:torquebox_var_lib_t,s0)
+@TARGET@/jboss/server/default/tmp	--	gen_context(system_u:object_r:torquebox_tmp_t,s0)
+@TARGET@/jboss/server/default/tmp(/.*)? 		gen_context(system_u:object_r:torquebox_tmp_t,s0)
