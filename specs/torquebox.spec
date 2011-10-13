@@ -132,6 +132,7 @@ fi
 %changelog
 * Thu Oct 13 2011 https://github.com/AncientLeGrey
 - Flagged config files
+- Sysconfig file cleand up
 * Thu Oct 13 2011 https://github.com/darrell
 - Create torquebox user as system user
 * Wed Aug 31 2011 https://github.com/AncientLeGrey - 1.1.1-1

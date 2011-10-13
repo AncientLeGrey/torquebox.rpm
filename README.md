@@ -26,7 +26,7 @@ Install a local copy of the torquebox docs with
 yum install torquebox-docs
 ```
 
-These docs are accessible at at http://localhost:8080/docs .
+These docs are accessible at http://localhost:8080/docs .
 
 
 ## Usage
@@ -86,9 +86,9 @@ sudo service torquebox clean
 does exactly that.
 
 ### Configuration
-Any script in /etc/torquebox.d gets sourced. Put application level configuration
-like JENKINS_HOME in there.
-
+ - Any script in /etc/torquebox.d gets sourced. Put application level configuration like JENKINS_HOME in there.
+ - Jvm Opts and other jboss startup parameters are set in /etc/sysconfig/torquebox .
+ - /var/lib/torquebox/.torquebox gets sourced every time a torquebox group member logges in.
 
 ## Build
 
