@@ -123,9 +123,17 @@ fi
 %defattr(-,%{name},%{name})
 %{target}
 %defattr(-,root,root)
-/etc
+/%{_initrddir}/%{name}
+/etc/profile.d/%{name}.sh
+%config /etc/sysconfig/%{name}
+%config %dir /etc/%{name}.d
+%config /etc/yum.repos.d/%{name}.repo
 
 %changelog
+* Thu Oct 13 2011 https://github.com/AncientLeGrey
+- Flagged config files
+* Thu Oct 13 2011 https://github.com/darrell
+- Create torquebox user as system user
 * Wed Aug 31 2011 https://github.com/AncientLeGrey - 1.1.1-1
 - Moved sources into torquebox subdirectory
 * Wed Aug 10 2011 https://github.com/AncientLeGrey - 1.1.1-1
