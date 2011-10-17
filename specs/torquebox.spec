@@ -4,7 +4,7 @@
 Summary: Ruby on JBoss...it goes to 11.
 Name: torquebox
 Version: 1.1.1
-Release: %(echo ${BUILD_NUMBER:-1})
+Release: %(echo ${BUILD_NUMBER:-2})
 License: LGPL
 Group: Applications/System
 URL: http://torquebox.org
@@ -14,16 +14,29 @@ Source2: %{name}/%{name}.sysconfig
 Source3: %{name}/%{name}.sh
 Source6: %{name}/%{name}.gems
 Source7: %{name}/%{name}.repo
+Source200: %{name}/selinux/%{name}.te
+Source201: %{name}/selinux/%{name}.fc.in
+Source202: %{name}/selinux/%{name}.if
+
 Patch0: %{name}/server.xml.patch
 Patch1: %{name}/run.sh.patch
 
-Distribution: Centos 5
+Distribution: Centos
 Packager: https://github.com/AncientLeGrey
 Vendor: JBoss Community
-BuildArch: noarch
+BuildArch: %{_arch}
 BuildRoot: %{_topdir}/tmp
 
 Requires: java >= 1.6.0
+
+#selinux
+BuildRequires: libselinux-devel
+%if (0%{?rhel_version} > 0 && 0%{?rhel_version} < 600) || (0%{?centos_version} > 0 && 0%{?centos_version} < 600)
+BuildRequires: selinux-policy
+%else
+BuildRequires: selinux-policy-devel
+%endif
+
 
 # https://github.com/torquebox/torquebox/blob/1.1.1/parent/pom.xml#L244
 Provides: jruby = %{jrubie}
@@ -46,7 +59,7 @@ load-balancing and high-availability is included right out-of-the-box.
 
 
 %prep
-%setup -n %{name}-%{version}
+%setup -n %{name}-%{version} -q
 # set some variables in external sources
 %define SOURCES %{SOURCE1} %{SOURCE2} %{SOURCE3} %{SOURCE7} %{PATCH1}
 sed -i    's|\${name}|%{name}|g'    %{SOURCES}
@@ -55,6 +68,16 @@ sed -i  's|\${target}|%{target}|g'  %{SOURCES}
 sed -i 's|\${version}|%{version}|g' %{SOURCES}
 %patch0 -p1
 %patch1 -p1
+
+### SELINUX
+mkdir -p selinux
+cd selinux
+cp %{SOURCE200} %{SOURCE202} .
+sed -e 's,@_VAR@,%{_var},' -e 's,@TARGET@,%{target},' -e 's,@_INITDDDIR@,%{_initddir},' %{SOURCE201} > torquebox.fc
+
+%build
+### SELINUX
+cd selinux &&  make -f %{_datadir}/selinux/devel/Makefile
 
 
 %install
@@ -79,6 +102,7 @@ chmod 644 %{buildroot}/etc/sysconfig/%{name}
 # backstage deploy wants to change this file
 chmod 775 %{buildroot}/%{target}/jboss/server/default/conf/props/torquebox-users.properties
 
+install -p -m 644 -D selinux/%{name}.pp %{buildroot}%{_datadir}/selinux/packages/%{name}/%{name}.pp
 
 %clean
 rm -Rf %{buildroot}
@@ -101,6 +125,18 @@ then
   /sbin/chkconfig --add %{name}
   /sbin/chkconfig %{name} on
 fi
+semodule -i %{sharedir}/selinux/packages/%{name}/%{name}.pp 2>/dev/null || :
+/usr/sbin/semanage port -a -t torquebox_port_t -p tcp 1090-1091
+/usr/sbin/semanage port -a -t torquebox_port_t -p tcp 1098-1099
+/usr/sbin/semanage port -a -t torquebox_port_t -p tcp 3873
+/usr/sbin/semanage port -a -t torquebox_port_t -p tcp 4446
+/usr/sbin/semanage port -a -t torquebox_port_t -p tcp 4712
+/usr/sbin/semanage port -a -t torquebox_port_t -p tcp 4714
+/usr/sbin/semanage port -a -t torquebox_port_t -p tcp 5445
+/usr/sbin/semanage port -a -t torquebox_port_t -p tcp 5455
+/usr/sbin/semanage port -a -t torquebox_port_t -p tcp 5500-5501
+/usr/sbin/semanage port -a -t torquebox_port_t -p tcp 8083
+
 /sbin/service %{name} start
 
 
@@ -109,6 +145,8 @@ if [ "$1" = 0 ]
 then
   /sbin/chkconfig --del %{name} || :
   /sbin/service %{name} stop || :
+  semodule -r %{name} 2>/dev/null || :
+
 fi
 
 
@@ -117,11 +155,15 @@ if [ "$1" = 0 ]
 then
   /usr/sbin/userdel -r %{name} || :
 fi
+if [ "$1" -ge "1" ] ; then # Upgrade
+  semodule -i %{_datadir}/selinux/packages/%{name}/%{name}.pp 2>/dev/null || :
+fi
 
 
 %files
 %defattr(-,%{name},%{name})
 %{target}
+%{_datadir}/selinux/packages/%{name}/%{name}.pp
 %defattr(-,root,root)
 /%{_initrddir}/%{name}
 /etc/profile.d/%{name}.sh
@@ -130,6 +172,8 @@ fi
 %config /etc/yum.repos.d/%{name}.repo
 
 %changelog
+* Thu Oct 13 2011 Darrell Fuhriman - 1.1.1-2
+- Added selinux support. 
 * Thu Oct 13 2011 https://github.com/AncientLeGrey
 - Flagged config files
 - Sysconfig file cleand up

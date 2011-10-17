@@ -1,0 +1,242 @@
+
+## <summary>policy for torquebox</summary>
+
+
+########################################
+## <summary>
+##	Execute a domain transition to run torquebox.
+## </summary>
+## <param name="domain">
+## <summary>
+##	Domain allowed access.
+## </summary>
+## </param>
+#
+interface(`torquebox_domtrans',`
+	gen_require(`
+		type torquebox_t, torquebox_exec_t;
+	')
+
+	domtrans_pattern($1, torquebox_exec_t, torquebox_t)
+')
+
+
+########################################
+## <summary>
+##	Execute torquebox server in the torquebox domain.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	The type of the process performing this action.
+##	</summary>
+## </param>
+#
+interface(`torquebox_initrc_domtrans',`
+	gen_require(`
+		type torquebox_initrc_exec_t;
+	')
+
+	init_labeled_script_domtrans($1, torquebox_initrc_exec_t)
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to read, 
+##	torquebox tmp files
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`torquebox_dontaudit_read_tmp_files',`
+	gen_require(`
+		type torquebox_tmp_t;
+	')
+
+	dontaudit $1 torquebox_tmp_t:file read_file_perms;
+')
+
+########################################
+## <summary>
+##	Allow domain to read, torquebox tmp files
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`torquebox_read_tmp_files',`
+	gen_require(`
+		type torquebox_tmp_t;
+	')
+
+	files_search_tmp($1)
+	allow $1 torquebox_tmp_t:file read_file_perms;
+')
+
+########################################
+## <summary>
+##	Allow domain to manage torquebox tmp files
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`torquebox_manage_tmp',`
+	gen_require(`
+		type torquebox_tmp_t;
+	')
+
+  	files_search_tmp($1)
+        manage_dirs_pattern($1, torquebox_tmp_t, torquebox_tmp_t)
+        manage_files_pattern($1, torquebox_tmp_t, torquebox_tmp_t)
+        manage_lnk_files_pattern($1, torquebox_tmp_t, torquebox_tmp_t)
+')
+
+########################################
+## <summary>
+##	Search torquebox lib directories.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`torquebox_search_lib',`
+	gen_require(`
+		type torquebox_var_lib_t;
+	')
+
+	allow $1 torquebox_var_lib_t:dir search_dir_perms;
+	files_search_var_lib($1)
+')
+
+########################################
+## <summary>
+##	Read torquebox lib files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`torquebox_read_lib_files',`
+	gen_require(`
+		type torquebox_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+        read_files_pattern($1, torquebox_var_lib_t, torquebox_var_lib_t)
+')
+
+########################################
+## <summary>
+##	Create, read, write, and delete
+##	torquebox lib files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`torquebox_manage_lib_files',`
+	gen_require(`
+		type torquebox_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+        manage_files_pattern($1, torquebox_var_lib_t, torquebox_var_lib_t)
+')
+
+########################################
+## <summary>
+##	Manage torquebox lib dirs files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`torquebox_manage_lib_dirs',`
+	gen_require(`
+		type torquebox_var_lib_t;
+	')
+
+	files_search_var_lib($1)
+        manage_dirs_pattern($1, torquebox_var_lib_t, torquebox_var_lib_t)
+')
+
+
+########################################
+## <summary>
+##	Read torquebox PID files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`torquebox_read_pid_files',`
+	gen_require(`
+		type torquebox_var_run_t;
+	')
+
+	files_search_pids($1)
+	allow $1 torquebox_var_run_t:file read_file_perms;
+')
+
+
+########################################
+## <summary>
+##	All of the rules required to administrate
+##	an torquebox environment
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="role">
+##	<summary>
+##	Role allowed access.
+##	</summary>
+## </param>
+## <rolecap/>
+#
+interface(`torquebox_admin',`
+	gen_require(`
+		type torquebox_t;
+		type torquebox_initrc_exec_t;
+                type torquebox_tmp_t;
+                type torquebox_var_lib_t;
+                type torquebox_var_run_t;
+	')
+
+	allow $1 torquebox_t:process { ptrace signal_perms };
+	ps_process_pattern($1, torquebox_t)
+
+	torquebox_initrc_domtrans($1)
+	domain_system_change_exemption($1)
+	role_transition $2 torquebox_initrc_exec_t system_r;
+	allow $2 system_r;
+
+  	files_search_tmp($1)
+	admin_pattern($1, torquebox_tmp_t)
+
+	files_search_var_lib($1)
+	admin_pattern($1, torquebox_var_lib_t)
+
+	files_search_pids($1)
+	admin_pattern($1, torquebox_var_run_t)
+
+')

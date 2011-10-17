@@ -1,0 +1,82 @@
+policy_module(torquebox,1.0.5)
+
+########################################
+#
+# Declarations
+#
+
+type torquebox_t;
+type torquebox_exec_t;
+init_daemon_domain(torquebox_t, torquebox_exec_t)
+
+permissive torquebox_t;
+
+type torquebox_initrc_exec_t;
+init_script_file(torquebox_initrc_exec_t)
+
+type torquebox_tmp_t;
+files_tmp_file(torquebox_tmp_t)
+
+type torquebox_var_lib_t;
+files_type(torquebox_var_lib_t)
+
+type torquebox_var_run_t;
+files_pid_file(torquebox_var_run_t)
+
+########################################
+#
+# torquebox local policy
+#
+
+type torquebox_port_t;
+corenet_port(torquebox_port_t)
+
+allow torquebox_t self:fifo_file rw_fifo_file_perms;
+allow torquebox_t self:unix_stream_socket create_stream_socket_perms;
+allow torquebox_t self:process execmem;
+
+allow torquebox_t torquebox_tmp_t:file execute;
+allow torquebox_t torquebox_var_lib_t:file execute;
+
+manage_dirs_pattern(torquebox_t, torquebox_tmp_t, torquebox_tmp_t)
+manage_files_pattern(torquebox_t, torquebox_tmp_t, torquebox_tmp_t)
+files_tmp_filetrans(torquebox_t, torquebox_tmp_t, { dir file })
+
+java_exec(torquebox_t)
+
+manage_dirs_pattern(torquebox_t, torquebox_var_lib_t, torquebox_var_lib_t)
+manage_files_pattern(torquebox_t, torquebox_var_lib_t, torquebox_var_lib_t)
+files_var_lib_filetrans(torquebox_t, torquebox_var_lib_t, { dir file } )
+
+manage_dirs_pattern(torquebox_t, torquebox_var_run_t, torquebox_var_run_t)
+manage_files_pattern(torquebox_t, torquebox_var_run_t, torquebox_var_run_t)
+files_pid_filetrans(torquebox_t, torquebox_var_run_t, { dir file })
+
+sysnet_dns_name_resolve(torquebox_t)
+corenet_all_recvfrom_unlabeled(torquebox_t)
+
+allow torquebox_t self:tcp_socket create_stream_socket_perms;
+corenet_tcp_sendrecv_all_if(torquebox_t)
+corenet_tcp_sendrecv_all_nodes(torquebox_t)
+corenet_tcp_sendrecv_all_ports(torquebox_t)
+corenet_tcp_bind_all_nodes(torquebox_t)
+allow torquebox_t torquebox_port_t:tcp_socket name_bind;
+
+corenet_tcp_bind_http_port(torquebox_t)
+corenet_tcp_bind_http_cache_port(torquebox_t)
+
+
+domain_use_interactive_fds(torquebox_t)
+
+files_read_etc_files(torquebox_t)
+
+miscfiles_read_localization(torquebox_t)
+
+dev_read_rand(torquebox_t)
+dev_read_urand(torquebox_t)
+
+# to get at /sys/devices/system/cpu
+dev_read_sysfs(torquebox_t)
+
+#shell scripts
+corecmd_exec_bin(torquebox_t)
